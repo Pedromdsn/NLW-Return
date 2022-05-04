@@ -1,27 +1,23 @@
-import { FeedbackRepository } from "../adapters/database/feedbacks"
+import { FeedbackAdapter } from "../adapters/database/feedbacks"
 import { MailAdapter } from "../adapters/mail/mail"
 
-interface SubmitFeedbackUseCaseRequest {
+interface SubmitFeedbackRequest {
   type: string
   message: string
   screenshot: string
 }
 
-export class SubmitFeedbackUSeCase {
-  constructor(private feedbackRepository: FeedbackRepository, private mailAdapter: MailAdapter) {}
+export class SubmitFeedback {
+  constructor(private feedback: FeedbackAdapter, private mail: MailAdapter) {}
 
-  async execute(request: SubmitFeedbackUseCaseRequest) {
-    const { type, message, screenshot } = request
-
+  async execute({ type, message, screenshot }: SubmitFeedbackRequest) {
     if (!type) throw new Error("Feedback type is required")
-
     if (!message) throw new Error("Feedback message is required")
-
     if (screenshot && !screenshot.startsWith("data:image/png;base64")) throw new Error("Invalid screenshot format")
 
-    await this.feedbackRepository.create({ type, screenshot, message })
+    await this.feedback.create({ type, screenshot, message })
 
-    await this.mailAdapter.sendMail({
+    await this.mail.sendMail({
       subject: "Novo Feedback",
       body: [
         `<div style="font-family: sans-serif; font-size: 16px; color: #111">`,

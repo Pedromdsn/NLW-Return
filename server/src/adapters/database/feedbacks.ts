@@ -4,6 +4,6 @@ export interface FeedbackCreateData {
   message: string
 }
 
-export interface FeedbackRepository {
+export interface FeedbackAdapter {
   create(data: FeedbackCreateData): Promise<void>
 }

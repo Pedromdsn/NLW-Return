@@ -1,17 +1,14 @@
-import { SubmitFeedbackUSeCase } from "./submit-feedback"
+import { SubmitFeedback } from "./submit-feedback"
 
-const createFeedbackRepository = jest.fn()
-const createNodemailerAdapter = jest.fn()
+const createFeedback = jest.fn()
+const createNodemailer = jest.fn()
 
-const submitFeedbackCase = new SubmitFeedbackUSeCase(
-  { create: createFeedbackRepository },
-  { sendMail: createNodemailerAdapter }
-)
+const submitFeedback = new SubmitFeedback({ create: createFeedback }, { sendMail: createNodemailer })
 
 describe("Submit feedback", () => {
   it("should be able to submit a feedback", async () => {
     await expect(
-      submitFeedbackCase.execute({
+      submitFeedback.execute({
         type: "BUG",
         message: "example comment",
         screenshot: "data:image/png;base64:TesteTesteTesteTesteTeste",
@@ -21,7 +18,7 @@ describe("Submit feedback", () => {
 
   it("should not be able to submit feedback without type", async () => {
     await expect(
-      submitFeedbackCase.execute({
+      submitFeedback.execute({
         type: "",
         message: "example comment",
         screenshot: "data:image/png;base64:TesteTesteTesteTesteTeste",
@@ -31,7 +28,7 @@ describe("Submit feedback", () => {
 
   it("should not be able to submit feedback without comment", async () => {
     await expect(
-      submitFeedbackCase.execute({
+      submitFeedback.execute({
         type: "BUG",
         message: "",
         screenshot: "data:image/png;base64:TesteTesteTesteTesteTeste",
@@ -41,7 +38,7 @@ describe("Submit feedback", () => {
 
   it("should not be able to submit feedback without an invalid screenshot", async () => {
     await expect(
-      submitFeedbackCase.execute({
+      submitFeedback.execute({
         type: "BUG",
         message: "example comment",
         screenshot: "image/png;base64:TesteTesteTesteTesteTeste",
