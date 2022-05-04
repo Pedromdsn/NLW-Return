@@ -14,11 +14,7 @@ router.post("/feedbacks", async (req, res) => {
   const submitFeedbackCase = new SubmitFeedbackUSeCase(prismaFeedbackRepository, nodemailerAdapter)
 
   await submitFeedbackCase
-    .execute({
-      type,
-      screenshot,
-      message,
-    })
+    .execute({ type, screenshot, message })
     .catch(({ message }) => res.status(500).json({ error: message }))
 
   return res.status(201).send()
