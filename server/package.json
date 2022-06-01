@@ -9,7 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@prisma/client": "^3.13.0",
+    "@prisma/client": "^3.14.0",
     "@swc/jest": "^0.2.20",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
